@@ -2,6 +2,10 @@
 
 set -o xtrace -o nounset -o pipefail -o errexit
 
+mkdir -p "${PREFIX}/bin"
+mkdir -p "${PREFIX}/libexec/${PKG_NAME}"
+ln -sf ${DOTNET_ROOT}/dotnet ${PREFIX}/bin
+
 rm -rf global.json
 framework_version="$(dotnet --version | sed -e 's/\..*//g').0"
 
@@ -14,10 +18,6 @@ sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framewo
     src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj
 sed -i '/RuntimeFrameworkVersion/d;' src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj
 sed -i '/RuntimeIdentifier/d;' src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj
-
-mkdir -p "${PREFIX}/bin"
-mkdir -p "${PREFIX}/libexec/${PKG_NAME}"
-ln -sf ${DOTNET_ROOT}/dotnet ${PREFIX}/bin
 
 # Build package with dotnet publish
 dotnet publish --no-self-contained "src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj" \
