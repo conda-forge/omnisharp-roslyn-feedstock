@@ -1,17 +1,17 @@
-{% set name = "omnisharp-roslyn" %}
-{% set version = "1.39.11" %}
+context:
+  version: 1.39.11
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: omnisharp-roslyn
+  version: ${{ version }}
 
 source:
-  git_url: https://github.com/OmniSharp/{{ name }}
-  git_rev: v{{ version }}
+  git: https://github.com/OmniSharp/omnisharp-roslyn
+  tag: v${{ version }}
 
 build:
-  noarch: generic
   number: 0
+  noarch: generic
 
 requirements:
   build:
@@ -22,17 +22,17 @@ requirements:
   run:
     - dotnet
 
-test:
-  commands:
-    - OmniSharp --help
+tests:
+  - script:
+      - OmniSharp --help
 
 about:
-  home: https://github.com/OmniSharp/{{ name }}
   license: MIT
   license_file:
     - license.md
     - license-files/
   summary: OmniSharp server (HTTP, STDIO) based on Roslyn workspaces
+  homepage: https://github.com/OmniSharp/omnisharp-roslyn
 
 extra:
   recipe-maintainers:
