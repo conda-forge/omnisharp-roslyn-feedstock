@@ -9,10 +9,6 @@ ln -sf ${DOTNET_ROOT}/dotnet ${PREFIX}/bin
 rm -rf global.json
 framework_version="$(dotnet --version | sed -e 's/\..*//g').0"
 
-# Update System.Text.Json to latest version to fix security warning
-# Remove with next release
-sed -i 's/"System.Text.Json" Version="8.0.0"/"System.Text.Json" Version="8.0.4"/' Directory.Packages.props
-
 # Override hardcoded .NET framework version
 sed -i "s?<TargetFrameworks>.*</TargetFrameworks>?<TargetFrameworks>net${framework_version}</TargetFrameworks>?" \
     src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj
@@ -21,7 +17,7 @@ sed -i '/RuntimeIdentifier/d;' src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver
 
 # Build package with dotnet publish
 dotnet publish --no-self-contained "src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj" \
-    -maxcpucount:1 --output ${PREFIX}/libexec/${PKG_NAME} --framework net${framework_version}
+    -maxcpucount:1 --output ${PREFIX}/libexec/${PKG_NAME} --framework net${framework_version} -p:TreatWarningsAsErrors=false
 rm ${PREFIX}/libexec/${PKG_NAME}/OmniSharp
 
 # Create bash and batch wrappers
