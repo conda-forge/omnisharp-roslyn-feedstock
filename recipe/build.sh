@@ -39,3 +39,5 @@ tee ignored_packages.json << EOF
 ["NETStandard.Library", "OmniSharp.Extensions.*", "Microsoft.DotNet.PlatformAbstractions", "Microsoft.TestPlatform.*"]
 EOF
 dotnet-project-licenses --input src/OmniSharp.Stdio.Driver/OmniSharp.Stdio.Driver.csproj -t -d license-files -ignore ignored_packages.json
+
+rm ${PREFIX}/bin/dotnet
